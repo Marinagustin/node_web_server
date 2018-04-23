@@ -2,6 +2,9 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
+// to fix heroku port issue (Error R10 (Boot timeout) -> Web process failed to bind to $PORT within 60 seconds of launch)
+const port = process.env.PORT || 3000;
+
 var app = express();
 hbs.registerPartials(__dirname + '/views/partials');
 hbs.registerHelper("getCurrentYear", () => {
@@ -69,4 +72,8 @@ app.get('/bad', (req, res) => {
 	});
 });
 
-app.listen(3000);
+app.listen(port, (err) => {
+	if(err) {
+		console.log("Unable to connect to port")
+	}
+});
